@@ -1,0 +1,27 @@
+name: 'Upload Teahouse'
+description: 'Complete configure & upload'
+inputs:
+  domain:  # id of input
+    description: 'Website to upload to'
+    required: true
+  root:  # id of input
+    description: 'Root directory of the site'
+    required: true
+    default: .
+outputs:
+  # random-number:
+  #   description: "Random number"
+  #   value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Configure S3
+      uses: teahouse-hosting/configure-s3@trunk
+      id: settings
+      with:
+        domain: ${{ inputs.domain }}
+    - id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1
+    - working-directory: ${{ inputs.root }}
+      run: |
+        aws s3 sync --delete . s3://${{steps.settings.outputs.bucket}}
