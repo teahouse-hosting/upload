@@ -8,7 +8,7 @@ inputs:
     description: 'Root directory of the site'
     required: true
     default: .
-outputs:
+ # outputs:
   # random-number:
   #   description: "Random number"
   #   value: ${{ steps.random-number-generator.outputs.random-number }}
@@ -23,5 +23,6 @@ runs:
     - id: install-aws-cli
       uses: unfor19/install-aws-cli-action@v1
     - working-directory: ${{ inputs.root }}
+      shell: bash
       run: |
         aws s3 sync --delete . s3://${{steps.settings.outputs.bucket}}
