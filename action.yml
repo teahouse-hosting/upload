@@ -25,4 +25,4 @@ runs:
     - working-directory: ${{ inputs.root }}
       shell: bash
       run: |
-        aws s3 sync --delete . s3://${{steps.settings.outputs.bucket}}
+        aws s3 sync --delete --exclude ".git*" . s3://${{steps.settings.outputs.bucket}}
